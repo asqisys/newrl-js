@@ -1,6 +1,6 @@
 {
   "name": "newrl-js",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "JS wrapper functions for interacting with the Newrl blockchain.",
   "main": "index.js",
   "engines": {
@@ -14,7 +14,9 @@
     "url": "git+https://github.com/asqisys/newrl-js.git"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "json-web-algorithms": "^0.2.0",
+    "keccak": "^3.0.2"
   },
   "keywords": [
     "newrl-js",
