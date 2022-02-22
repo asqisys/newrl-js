@@ -11,7 +11,7 @@ test("Get Balance", async () => {
 });
 
 test("Get Balance - Exception Error", async () => {
-  const testNode = new newrl.Node("http://3.6.236.206:8090/");
+  const testNode = new newrl.Node("http://3.6.236.206:8090");
   try {
     await testNode.getBalance(
       "TOKEN_IN_WALLET",
