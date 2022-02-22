@@ -203,6 +203,51 @@ class Node {
     });
     return result.data;
   }
+
+  /**
+   * Documentation
+   * @method - Sign transaction.
+   * @param {Object}  data  - {JSON} - {walletData,transactionData}  wallet object with address, publicKey, privateKey, transaction data
+   * @returns  {Object} - JSON object with transaction data
+   */
+  async signTransaction(data) {
+    const sign_transaction_path = "/sign-transaction";
+    const result = await axiosFun({
+      method: "POST",
+      url: this.#url + sign_transaction_path,
+      data,
+    });
+    return result.data;
+  }
+
+  /**
+   * Documentation
+   * @method - Get wallet address.
+   * @returns {Object} - The wallet address, public key, private key.
+   */
+  async generateWalletAddress() {
+    const generate_wallet_address_path = "/generate-wallet-address";
+    const result = await axiosFun({
+      method: "GET",
+      url: this.#url + generate_wallet_address_path,
+    });
+    return result.data;
+  }
+
+  /**
+   * Documentation
+   * @method - Get Address form public Key.
+   * @param {String}  publicKey  - {encodeURIComponent} - publicKey
+   * @returns {Object} - The wallet address.
+   */
+  async getWalletAddress(publicKey) {
+    const generate_wallet_address_path = `/get-address-from-publickey?public_key=${publicKey}`;
+    const result = await axiosFun({
+      method: "GET",
+      url: this.#url + generate_wallet_address_path,
+    });
+    return result.data;
+  }
 }
 
 module.exports = Node;
