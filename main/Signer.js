@@ -1,4 +1,7 @@
 const JWA = require("json-web-algorithms");
+const EC = require('elliptic').ec;
+const ec = new EC('secp256k1');
+var SHA1 = require('crypto-js/sha1')
 
 /**
  * Documentation
@@ -8,16 +11,24 @@ const JWA = require("json-web-algorithms");
  */
 
 module.exports = function signTransaction(walletData, transactionData) {
-  const bytesPrivateKey = new Buffer.from(walletData.privateKey);
-  const msg = new Buffer.from(JSON.stringify(transactionData["transaction"]));
-  var signature = JWA.sign("HS512", msg, bytesPrivateKey);
 
-  var isValid = JWA.verify("HS512", signature, msg, bytesPrivateKey);
+  const key_options = {
+    priv: walletData.private,
+    pub: walletData.public,
+    privEnc: "hex",
+    pubEnc: "hex"
+  }
+  const key = ec.keyPair(key_options)
+  const msg = JSON.stringify(transactionData['transaction']).replaceAll(":", ": ").replaceAll(",", ", ")
+  const msgHsh = SHA1(msg).toString();
+  var signature = key.sign(msgHsh, "hex", { canonical: true });
+  var totalSign = signature.r.toString("hex", 64).concat(signature.s.toString("hex", 64))
+  var isValid = key.verify(msgHsh, signature)
   if (isValid.toString()) {
     transactionData["signatures"] = [
       {
         wallet_address: walletData["address"],
-        msgsign: signature.toString("base64"),
+        msgsign: totalSign,
       },
     ];
   }

@@ -1,5 +1,8 @@
 const crypto = require("crypto");
 const keccakHash = require("keccak");
+const EC = require('elliptic').ec;
+const ec = new EC('secp256k1');
+
 
 /**
  * Documentation
@@ -8,7 +11,7 @@ const keccakHash = require("keccak");
  */
 class Wallet {
   getAddressFromPublicKey(publicKey) {
-    const convertedKey = new Buffer.from(publicKey, "base64");
+    const convertedKey = new Buffer.from(publicKey, "hex");
     const rawAddress = keccakHash("keccak256")
       .update(convertedKey)
       .digest()
@@ -24,14 +27,14 @@ class Wallet {
    */
 
   getWalletAddress() {
-    const primeLength = 600;
-    const diffHell = crypto.createDiffieHellman(primeLength);
-    diffHell.generateKeys("base64");
+    const key = ec.genKeyPair();
+    const pub = key.getPublic().encode('hex');
+    const priv = key.getPrivate("hex");
 
     return {
-      address: this.getAddressFromPublicKey(diffHell.getPublicKey()),
-      publicKey: diffHell.getPublicKey("base64"),
-      privateKey: diffHell.getPrivateKey("base64"),
+      address: this.getAddressFromPublicKey(pub),
+      publicKey: pub,
+      privateKey: priv,
     };
   }
 }
