@@ -1,41 +1,28 @@
 const newrl = require("./index");
 
-test("Get Balance", async () => {
-  const testNode = new newrl.Node();
-  const balance = await testNode.getBalance(
-    "TOKEN_IN_WALLET",
-    "0xc29193dbab0fe018d878e258c93064f01210ec1a",
-    9
+test("Generate wallet",async()=>{
+  const testNode = new newrl.Wallet();
+  const wallet = await testNode.getWalletAddress(
   );
-  expect(balance).toBe(0);
-});
+  expect(wallet).toBeDefined();
+})
 
-test("Get Balance - Exception Error", async () => {
-  const testNode = new newrl.Node("http://3.6.236.206:8090/");
-  try {
-    await testNode.getBalance(
-      "TOKEN_IN_WALLET",
-      "0xc29193dbab0fe018d878e258c93064f01210ec1a",
-      9
-    );
-  } catch ({ message }) {
-    expect(message).toBe("Request failed with status code 404");
-  }
-});
 
 test("Generate Wallet - With Specified Public Key", () => {
   const testWallet = new newrl.Wallet();
   const wallet = testWallet.getAddressFromPublicKey(
-    "sB8/+o32Q7tRTjB2XcG65QS94XOj9nP+mI7S6RIHuXzKLRlbpnu95Zw0MxJ2VGacF4TY5rdrIB8VNweKzEqGzg=="
+    "04547380eadd27f3d82225ac787821da0d56c88971b95fcfb420ac2c5ab5af249812deee5ac27f4c7dee8f4f4dc44cc2edc06c8c7d6fd6bff2472a58eedcf34187"
   );
-  expect(wallet).toBe("0xc29193dbab0fe018d878e258c93064f01210ec1a");
+  expect(wallet).toBe("0x50b7060bbb38d93ec393ea6f40b1ff42c382eedf");
 });
 
 test("File Hash - With Specified file", async () => {
   const hash = await new newrl.getFileHash(
-    "/Users/ps/Downloads/wolf-3022813_1920.jpg"
+    "/home/newrl.jpeg"
   );
+  console.log(hash)
   expect(hash).toBe(
-    "dcc52801f53bf960e7305ae52eb76b0f883fcf3829a2c4bb553ad6272a254d7e"
+    "9bcb0dd41b0c24d0f3aeba3aa82daacbfe9e58ef5fee7c1453647b90c4b13904"
   );
 });
+
