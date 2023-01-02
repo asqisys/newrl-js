@@ -12,6 +12,9 @@ var SHA1 = require('crypto-js/sha1')
 
 module.exports = function signTransaction(walletData, transactionData) {
 
+  if(walletData.public.length == 128)
+    // 04 - uncompressed key points 
+    walletData.public = '04'+walletData.public
   const key_options = {
     priv: walletData.private,
     pub: walletData.public,
