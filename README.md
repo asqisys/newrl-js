@@ -1,4 +1,4 @@
-# newrl-js v 1.0.2
+# newrl-js v 1.0.3
 
 JS wrapper functions for interacting with the Newrl blockchain.
 
